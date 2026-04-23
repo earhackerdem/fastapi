@@ -2,6 +2,8 @@ import zoneinfo
 
 from datetime import datetime
 
+from db import SessionDep
+
 from fastapi import FastAPI
 
 from models import CustomerCreate,Customer, Transaction, Invoice
@@ -33,7 +35,7 @@ db_customers: list[Customer] = []
 current_id: int = 0
 
 @app.post('/customers',response_model=Customer)
-async def create_customer(customer_data: CustomerCreate):
+async def create_customer(customer_data: CustomerCreate, session: SessionDep):
     customer = Customer.model_validate(customer_data.model_dump())
     ## Asumiendo que se hace en bd
     customer.id = len(db_customers)
