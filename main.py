@@ -53,7 +53,7 @@ async def get_customer(id: int, session: SessionDep):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='Customer not found')
     return customer
 
-@app.patch('/customers/{id}',response_model=Customer)
+@app.patch('/customers/{id}',response_model=Customer, status_code=status.HTTP_201_CREATED)
 async def update_customer(id: int, customer_data: CustomerUpdate, session: SessionDep):
     customer = session.get(Customer,id)
     if customer == None:
