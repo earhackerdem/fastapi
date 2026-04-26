@@ -5,7 +5,7 @@ from sqlmodel import select
 from models import Customer,CustomerCreate, CustomerUpdate
 from db import SessionDep
 
-router = APIRouter()
+router = APIRouter(tags=['customers'])
 
 @router.post('/customers',response_model=Customer)
 async def create_customer(customer_data: CustomerCreate, session: SessionDep):
