@@ -53,7 +53,7 @@ class Customer(CustomerBase,table=True):
     )
 
 class TransactionBase(SQLModel):
-    ammount: int
+    amount: int
     description: str    
 class Transaction(TransactionBase,table=True):
     id: int | None = Field(default=None, primary_key=True)
@@ -71,5 +71,5 @@ class Invoice(BaseModel):
     total: int 
     
     @property
-    def ammount_total(self):
-        return sum(transaction.ammount for transaction in self.transactions)
+    def amount_total(self):
+        return sum(transaction.amount for transaction in self.transactions)
