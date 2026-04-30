@@ -22,7 +22,7 @@ async def create_transaction(transaction_data: TransactionCreate, session: Sessi
 
 
 @router.get('/transactions')
-async def listTransaction(session: SessionDep):
+async def list_transaction(session: SessionDep):
     query = select(Transaction)
     transactions = session.exec(query).all()
     return transactions 
