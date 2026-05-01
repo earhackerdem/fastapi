@@ -5,11 +5,13 @@ from datetime import datetime
 
 from db import create_all_tables
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request, status
 
 from models import  Transaction, Invoice
 from .routers import customers, transactions, plans
-    
+from fastapi import FastAPI, Request, Depends 
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from typing import Annotated
 
 app = FastAPI(lifespan=create_all_tables)
 app.include_router(customers.router)
@@ -25,9 +27,15 @@ async def log_request_time(request: Request, call_next):
     print(f'Request: {request.url} completed in:{process_time:.4f} seconds')
     return response
 
+security = HTTPBasic()
+
 @app.get("/")
-async def root():
-    return {'message':"hola"}
+async def root(credentials: Annotated[HTTPBasicCredentials,Depends(security)]):
+    print(credentials)
+    if credentials.username == 'saul' and credentials.password == '1234':
+        return {'message':f"hola {credentials.username}"}
+    else:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
 country_timezones = {
     'CO': 'America/Bogota',
