@@ -30,7 +30,7 @@ async def get_customer(id: int, session: SessionDep):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='Customer not found')
     return customer
 
-@router.patch('/customers/{id}',response_model=Customer, status_code=status.HTTP_201_CREATED)
+@router.patch('/customers/{id}',response_model=Customer, status_code=status.HTTP_200_OK)
 async def update_customer(id: int, customer_data: CustomerUpdate, session: SessionDep):
     customer = session.get(Customer,id)
     if customer == None:
@@ -43,7 +43,7 @@ async def update_customer(id: int, customer_data: CustomerUpdate, session: Sessi
     session.refresh(customer)
     return customer
 
-@router.delete('/customers/{id}')
+@router.delete('/customers/{id}',status_code=status.HTTP_204_NO_CONTENT)
 async def delete_customer(id: int, session: SessionDep):
     customer = session.get(Customer,id)
     if customer == None:
